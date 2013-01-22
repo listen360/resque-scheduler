@@ -181,7 +181,9 @@ module ResqueScheduler
 
     puts "next_item_for_timestamp(#{timestamp}) = #{key} (#{key.class})"
     begin
-      item = decode redis.lpop(key)
+      i1 = redis.lpop(key)
+      puts "i1 = #{i1.inspect}"
+      item = decode i1
     rescue => ex
       puts "hit exception = #{ex}"
       raise ex
