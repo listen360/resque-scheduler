@@ -17,7 +17,7 @@ module Resque
 
       # If set, will try to update the schulde in the loop
       attr_accessor :dynamic
-      
+
       # Amount of time in seconds to sleep between polls of the delayed
       # queue.  Defaults to 5
       attr_writer :poll_sleep_amount
@@ -26,7 +26,7 @@ module Resque
       def scheduled_jobs
         @@scheduled_jobs
       end
-      
+
       def poll_sleep_amount
         @poll_sleep_amount ||= 5 # seconds
       end
@@ -75,7 +75,7 @@ module Resque
         end
       end
 
-      def print_schedule 
+      def print_schedule
         if rufus_scheduler
           log! "Scheduling Info\tLast Run"
           scheduler_jobs = rufus_scheduler.all_jobs
@@ -89,7 +89,7 @@ module Resque
       # rufus scheduler instance
       def load_schedule!
         procline "Loading Schedule"
-         
+
         # Need to load the schedule from redis for the first time if dynamic
         Resque.reload_schedule! if dynamic
 
@@ -147,6 +147,7 @@ module Resque
         if timestamp = Resque.next_delayed_timestamp(at_time)
           procline "Processing Delayed Items"
           while !timestamp.nil?
+            puts "handling delayed items with at_time = #{at_time.inspect} and timestamp = #{timestamp.inspect}"
             enqueue_delayed_items_for_timestamp(timestamp)
             timestamp = Resque.next_delayed_timestamp(at_time)
           end
@@ -155,6 +156,7 @@ module Resque
 
       # Enqueues all delayed jobs for a timestamp
       def enqueue_delayed_items_for_timestamp(timestamp)
+        puts "enqueue_delayed_items_for_timestamp(#{timestamp} (#{timestamp.class})"
         item = nil
         begin
           handle_shutdown do
