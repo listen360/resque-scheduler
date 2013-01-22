@@ -178,11 +178,11 @@ module ResqueScheduler
   def next_item_for_timestamp(timestamp)
     key = "delayed:#{timestamp.to_i}"
 
-    log!("next_item_for_timestamp(#{timestamp}) = #{key} (#{key.class})")
+    puts "next_item_for_timestamp(#{timestamp}) = #{key} (#{key.class})"
     begin
       item = decode redis.lpop(key)
     rescue => ex
-      log!("hit exception = #{ex}")
+      puts "hit exception = #{ex}"
       raise ex
     end
 
