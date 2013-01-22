@@ -168,6 +168,7 @@ module ResqueScheduler
   # (don't call directly)
   def next_delayed_timestamp(at_time=nil)
     items = redis.zrangebyscore :delayed_queue_schedule, '-inf', (at_time || Time.now).to_i, :limit => [0, 1]
+    ap items
     timestamp = items.nil? ? nil : Array(items).first
     timestamp.to_i unless timestamp.nil?
   end
