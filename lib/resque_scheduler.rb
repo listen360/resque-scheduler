@@ -183,7 +183,7 @@ module ResqueScheduler
     begin
       i1 = redis.lpop(key)
       puts "i1 = #{i1.inspect}"
-      item = decode i1.to_s
+      item = decode i1.to_s rescue decode i1
     rescue => ex
       puts "hit exception = #{ex}"
       raise ex
